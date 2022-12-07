@@ -5,8 +5,12 @@
 #include "items.h"
 #include <map>
 
-void lowercase(char sentence[]);
+const char north[6] = {'n','o','r','t','h','\0'};
+const char south[6] = {'s','o','u','t','h','\0'};
+const char east[5] = {'e','a','s','t','\0'};
+const char west[5] = {'w','e','s','t','\0'};
 
+void lowercase(char sentence[]);
 
 int main() {
   Room* currentRoom;
@@ -16,8 +20,42 @@ int main() {
   strcpy(roomName, "Entrance");
   strcpy(itemName, "flask");
   Room* entrance = new Room(roomName);
+  currentRoom = entrance;
   Item* flask = new Item(itemName);
   entrance->addItem(flask);
+  strcpy(roomName, "lab");
+  Room* lab = new Room(roomName);
+  entrance->setExit(north, lab);
+  lab->setExit(south, entrance);
+  strcpy(roomName, "track");
+  Room* track = new Room(roomName);
+  entrance->setExit(south,track);
+  track->setExit(north,entrance);
+  strcpy(roomName, "upperforum");
+  Room* upperforum = new Room(roomName);
+  entrance->setExit(west, upperforum);
+  upperforum->setExit(east, entrance);
+  strcpy(roomName, "lowerforum");
+  Room* lowerforum = new Room(roomName);
+  entrance->setExit(east, lowerforum);
+  lowerforum->setExit(west, entrance);
+  strcpy(roomName, "uppercommons");
+  Room* uppercommons = new Room(roomName);
+  lab->setExit(west, uppercommons);
+  uppercommons->setExit(east, lab);
+  upperforum->setExit(north, uppercommons);
+  uppercommons->setExit(south, upperforum);
+  strcpy(roomName, "gym");
+  Room* gym = new Room(roomName);
+  track->setExit(west, gym);
+  gym->setExit(east, track);
+  upperforum->setExit(south, gym);
+  gym->setExit(north,upperforum);
+
+
+
+
+    
   bool run = true;
   char command[40];
   while(run == true) {

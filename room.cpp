@@ -14,8 +14,8 @@ Room::Room(char newTitle[150]) {
   strcpy(title, newTitle);
 }
 
-void Room::setExit(char* direction, Room* accessible) {
-  exits.insert(pair<char*,Room*>(direction,accessible));
+void Room::setExit(const char* direction, Room* accessible) {
+  exits.insert(pair<const char*,Room*>(direction,accessible));
 }
 
 void Room::addItem(Item* item) {
@@ -38,7 +38,7 @@ vector<Item*> Room::getItems() {
   return items;
 }
 
-map<char*,Room*> Room::getExits() {
+map<const char*,Room*> Room::getExits() {
   return exits;
 }
 
