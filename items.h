@@ -5,8 +5,10 @@
 
 class Item {
  public:
-  Item();
-  Item(char newTitle[40]);
-  char title[150];
+    Item();
+    Item(char newTitle[150]);
+    virtual char* getTitle();
+ private:
+    char title[150];
 };
 #endif

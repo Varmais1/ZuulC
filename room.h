@@ -12,14 +12,15 @@ class Room {
  public:
   Room();
   Room(char newTitle[40]);
-  virtual void setExit(char* direction, Room* accessible);
+  virtual void setExit(const char* direction, Room* accessible);
   virtual void addItem(Item* item);
   virtual Item* takeItem(Item* item);
-  char[] getTitle();
-  map<char*,Room*> getExits();
-  vector<Item*> getItems();
+  virtual map<const char*,Room*> getExits();
+  virtual vector<Item*> getItems();
+  virtual char* getTitle();
+ private:
   char title[40];
-  map<char*,Room*> exits;
+  map<const char*,Room*> exits;
   vector<Item*> items;
 };
 #endif
