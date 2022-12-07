@@ -12,3 +12,7 @@ Item::Item() {
 Item::Item(char newTitle[40]) {
   strcpy(title, newTitle);
 }
+
+char* Item::getTitle() {
+  return title;
+}

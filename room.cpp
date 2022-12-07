@@ -1,6 +1,8 @@
 #include <iostream>
 #include "room.h"
 #include <cstring>
+#include <vector>
+
 
 using namespace std;
 
@@ -22,7 +24,7 @@ void Room::addItem(Item* item) {
 
 Item* Room::takeItem(Item* item) {
   for(auto i = items.begin(); i != items.end(); i++) {
-    if(strcmp((*i)->title,item->title) == 0) {
+    if(strcmp((*i)->getTitle(),item->getTitle()) == 0) {
       Item* output = *i;
       items.erase(i);
       return output;
@@ -32,7 +34,16 @@ Item* Room::takeItem(Item* item) {
   return nullptr;
 }
 
+vector<Item*> Room::getItems() {
+  return items;
+}
 
+map<char*,Room*> Room::getExits() {
+  return exits;
+}
 
+char* Room::getTitle() {
+  return title;
+}
 
   
