@@ -22,9 +22,9 @@ void Room::addItem(Item* item) {
   items.push_back(item);
 }
 
-Item* Room::takeItem(Item* item) {
+Item* Room::takeItem(char* itemName) {
   for(auto i = items.begin(); i != items.end(); i++) {
-    if(strcmp((*i)->getTitle(),item->getTitle()) == 0) {
+    if(strcmp(itemName, (*i)->getTitle()) == 0) {
       Item* output = *i;
       items.erase(i);
       return output;

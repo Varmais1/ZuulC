@@ -9,7 +9,7 @@ Item::Item() {
   strcpy(title, "   ");
 }
 
-Item::Item(char newTitle[40]) {
+Item::Item(const char* newTitle) {
   strcpy(title, newTitle);
 }
 

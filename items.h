@@ -6,7 +6,7 @@
 class Item {
  public:
     Item();
-    Item(char newTitle[150]);
+    Item(const char* newTitle);
     virtual char* getTitle();
  private:
     char title[150];

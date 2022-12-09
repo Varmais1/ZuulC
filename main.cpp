@@ -9,6 +9,11 @@ const char north[6] = {'n','o','r','t','h','\0'};
 const char south[6] = {'s','o','u','t','h','\0'};
 const char east[5] = {'e','a','s','t','\0'};
 const char west[5] = {'w','e','s','t','\0'};
+const char look[5] = {'l','o','o','k','\0'};
+const char take[5] = {'t','a','k','e','\0'};
+const char drop[5] = {'d','r','o','p','\0'};
+
+
 
 void lowercase(char sentence[]);
 
@@ -212,7 +217,37 @@ int main() {
 	cout << "There is no room that is directly east of this room." << endl;
       }
     }
-
+    else if(strcmp(command, look) == 0) {
+      currentRoom->printItems();
+    }
+    else if(strcmp(command, take)==0) {
+      cout << "Which item would you like to take?" << endl;
+      cin.get(itemName, 150);
+      cin.ignore();
+      Item* temp = currentRoom->takeItem(itemName);
+      if(temp != nullptr) {
+	Inventory.push_back(temp);
+      }
+    }
+    else if(strcmp(command, drop) == 0) {
+      cout << "Which item would you like to drop?" << endl;
+      cin.get(itemName,150);
+      cin.ignore();
+      bool haveItem = false;
+      for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
+	if(strcmp((*i)->getTitle(), itemName) == 0) {
+	  currentRoom->addItem(*i);
+	  Inventory.erase(i);
+	  haveItem = true;
+	  break;
+	}
+      }
+      if(haveItem == false) {
+	cout << "You do not have that item." << endl;
+      }
+      
+    }
+     
   }
   return 0;
 }
