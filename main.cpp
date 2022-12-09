@@ -17,22 +17,28 @@ int main() {
   map<const char*, Room*> currentExits;
   vector<Item*> Inventory;
   char roomName[40];
-  char itemName[40];
+  char itemName[150];
   strcpy(roomName, "Entrance");
-  strcpy(itemName, "flask");
+  strcpy(itemName, "backpack");
   Room* entrance = new Room(roomName);
   currentRoom = entrance;
 
 
-  Item* flask = new Item(itemName);
-  entrance->addItem(flask);
+  Item* backpack = new Item(itemName);
+  Inventory.push_back(backpack);
 
+  strcpy(itemName, "Security Card");
+  Item* secCard = new Item(itemName);
+  entrance->addItem(secCard);
+  entrance->printItems();
 
   strcpy(roomName, "Lab");
   Room* lab = new Room(roomName);
   entrance->setExit(north, lab);
   lab->setExit(south, entrance);
-
+  strcpy(itemName, "computer");
+  Item* computer = new Item(itemName);
+  lab->addItem(computer);
 
   strcpy(roomName, "Track");
   Room* track = new Room(roomName);
@@ -96,12 +102,18 @@ int main() {
   Room* library = new Room(roomName);
   field->setExit(east, library);
   library->setExit(west, field);
+  strcpy(itemName, "USB");
+  Item* USB = new Item(itemName);
+  library->addItem(USB);
 
   strcpy(roomName, "Theatre");
   Room* theatre = new Room(roomName);
   lowercommons->setExit(east, theatre);
   theatre->setExit(west, lowercommons);
-
+  strcpy(itemName, "Projector");
+  Item* projector = new Item(itemName);
+  theatre->addItem(projector);
+  
   strcpy(roomName, "Pub");
   Room* pub = new Room(roomName);
   cafeteria->setExit(south, pub);
@@ -110,7 +122,11 @@ int main() {
   pub->setExit(east, upperforum);
   bathroom->setExit(north, pub);
   pub->setExit(south,bathroom);
+  strcpy(itemName, "Student ID");
+  Item* studentID = new Item(itemName);
+  pub->addItem(studentID);
 
+  
 
   strcpy(roomName, "Office");
   Room* office = new Room(roomName);

@@ -46,4 +46,9 @@ char* Room::getTitle() {
   return title;
 }
 
-  
+void Room::printItems() {
+  for(auto itr = items.begin(); itr!= items.end(); itr++) {
+    cout << (*itr)->getTitle() << "\t";
+  }
+
+}
