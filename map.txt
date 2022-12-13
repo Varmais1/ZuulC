@@ -1,0 +1,3 @@
+cafeteria       uppercommons	lab	        lowercommons	theatre
+pub		upperforum	entrance	lowerforum	office
+bathroom	gym		track		field		library	

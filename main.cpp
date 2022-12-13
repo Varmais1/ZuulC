@@ -24,7 +24,7 @@ int main() {
   char roomName[40];
   char itemName[150];
   strcpy(roomName, "Entrance");
-  strcpy(itemName, "backpack");
+  strcpy(itemName, "Backpack");
   Room* entrance = new Room(roomName);
   currentRoom = entrance;
 
@@ -35,13 +35,12 @@ int main() {
   strcpy(itemName, "Security Card");
   Item* secCard = new Item(itemName);
   entrance->addItem(secCard);
-  entrance->printItems();
 
   strcpy(roomName, "Lab");
   Room* lab = new Room(roomName);
   entrance->setExit(north, lab);
   lab->setExit(south, entrance);
-  strcpy(itemName, "computer");
+  strcpy(itemName, "Computer");
   Item* computer = new Item(itemName);
   lab->addItem(computer);
 
@@ -49,6 +48,9 @@ int main() {
   Room* track = new Room(roomName);
   entrance->setExit(south,track);
   track->setExit(north,entrance);
+  strcpy(itemName, "QR Code Sticker");
+  Item* qrCode = new Item(itemName);
+  track->addItem(qrCode);
 
 
   strcpy(roomName, "Upper Forum");
@@ -69,7 +71,9 @@ int main() {
   uppercommons->setExit(east, lab);
   upperforum->setExit(north, uppercommons);
   uppercommons->setExit(south, upperforum);
-
+  strcpy(itemName, "Phone");
+  Item* phone = new Item(itemName);
+  uppercommons->addItem(phone);
 
   strcpy(roomName, "Gym");
   Room* gym = new Room(roomName);
@@ -148,6 +152,14 @@ int main() {
     
   bool run = true;
   char command[40];
+  bool hasComputer = false;
+  bool hasBackpack = false;
+  bool hasStudentID = false;
+  bool hasSecurityCard = false;
+  bool hasUSB = false;
+
+  cout << "You are in a school, and you need to check your personal email to know where to go after school." << endl;
+  cout << "The school only allows school emails to be accessed on school computers, and you need to use a special computer to access your email." << endl;
   while(run == true) {
     cout << endl;
     cout << "You are currently in the " << currentRoom->getTitle() << "." << endl;
@@ -247,8 +259,48 @@ int main() {
       }
       
     }
-     
+    if(hasSecurityCard == false) {
+    for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
+      if(strcmp((*i)->getTitle(), "Security Card") == 0) {
+	hasSecurityCard = true;
+      }
+    }
+    }
+    if(hasBackpack == false) {
+      for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
+	if(strcmp((*i)->getTitle(), "Backpack") == 0) {
+	  hasBackpack = true;
+	}
+      }
+    }
+    if(hasStudentID == false) {
+      for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
+	if(strcmp((*i)->getTitle(), "Student ID") == 0) {
+	  hasStudentID = true;
+	}
+      }
+    }
+    if(hasComputer == false) {
+      for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
+	if(strcmp((*i)->getTitle(), "Computer") == 0) {
+	  hasComputer = true;
+	}
+      }
+    }
+    if(hasUSB == false) {
+      for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
+	if(strcmp((*i)->getTitle(), "USB") == 0) {
+	  hasUSB = true;
+	}
+      }
+    }
+    if(hasSecurityCard && hasBackpack && hasStudentID && hasComputer && hasUSB && strcmp(currentRoom->getTitle(), lab->getTitle()) == 0) {
+      cout << "You have now successfully signed into your email." << endl;
+      cout << "Unfortunately, you just now remembered that you did not have anything after school, and head home." << endl;
+      run = false;
+    }
   }
+  
   return 0;
 }
 
