@@ -4,7 +4,12 @@
 #include "room.h"
 #include "items.h"
 #include <map>
+/* Contributor: Ishaan Varma
+   Date: 12/14/2022
+   What this program does: Where the main game runs, and the map is created.
+*/
 
+//commands
 const char north[6] = {'n','o','r','t','h','\0'};
 const char south[6] = {'s','o','u','t','h','\0'};
 const char east[5] = {'e','a','s','t','\0'};
@@ -12,30 +17,39 @@ const char west[5] = {'w','e','s','t','\0'};
 const char look[5] = {'l','o','o','k','\0'};
 const char take[5] = {'t','a','k','e','\0'};
 const char drop[5] = {'d','r','o','p','\0'};
+const char inventory[10] = {'i','n','v','e','n','t','o','r','y','\0'};
 
-
-
+//makes commands case insensitive
 void lowercase(char sentence[]);
 
+//main, where everything runs.
 int main() {
+  //stores the room which the player is in
   Room* currentRoom;
+  //stores the exits that the current room has
   map<const char*, Room*> currentExits;
+  //where the items the player has is stored
   vector<Item*> Inventory;
+  //holds the names of rooms to get around of string warnings
   char roomName[40];
+  //holds the names of items to get around string warnings
   char itemName[150];
   strcpy(roomName, "Entrance");
   strcpy(itemName, "Backpack");
+  //creates the entrance, and makes the current room the entrance in the beginning.
   Room* entrance = new Room(roomName);
   currentRoom = entrance;
 
-
+  //adds the backpack to the players inventory
   Item* backpack = new Item(itemName);
   Inventory.push_back(backpack);
 
+  //adds the security card to the entrance
   strcpy(itemName, "Security Card");
   Item* secCard = new Item(itemName);
   entrance->addItem(secCard);
 
+  //lines 53-161 create rooms, set their exits, create items, and add them to rooms.
   strcpy(roomName, "Lab");
   Room* lab = new Room(roomName);
   entrance->setExit(north, lab);
@@ -149,7 +163,7 @@ int main() {
   currentRoom = entrance;
   currentExits = entrance->getExits();
 
-    
+  //booleans that check whether to continue to run the game, and also check win conditions.  
   bool run = true;
   char command[40];
   bool hasComputer = false;
@@ -158,9 +172,11 @@ int main() {
   bool hasSecurityCard = false;
   bool hasUSB = false;
 
+  //explanation of the game, and also where the game is running.
   cout << "You are in a school, and you need to check your personal email to know where to go after school." << endl;
   cout << "The school only allows school emails to be accessed on school computers, and you need to use a special computer to access your email." << endl;
   while(run == true) {
+    //ask for a command, and make it lower case
     cout << endl;
     cout << "You are currently in the " << currentRoom->getTitle() << "." << endl;
     for(auto itr = currentExits.begin(); itr != currentExits.end(); itr++) {
@@ -169,10 +185,12 @@ int main() {
     cout << "Type in quit in order to stop the program." << endl;
     cin.get(command,40);
     cin.ignore();
+    //if the command is quit, stop the game.
     lowercase(command);
     if(strcmp(command, "quit") == 0) {
       run = false;
     }
+    //if the command is north, go to the room that is to the north by setting the current room to the room that is to the north, if one exists.
     else if(strcmp(command,north) == 0) {
       bool exists = false;
       for(auto itr = currentExits.begin(); itr != currentExits.end(); itr++) {
@@ -187,6 +205,7 @@ int main() {
 	cout << "There is no room that is directly north of this room." << endl;
       }
     }
+    //same as the command as north, but for the room to the south
     else if(strcmp(command,south) == 0) {
       bool exists = false;
       for(auto itr = currentExits.begin(); itr != currentExits.end(); itr++) {
@@ -201,6 +220,7 @@ int main() {
 	cout << "There is no room that is directly south of this room." << endl;
       }
     }
+    //same as the command north, but for the room to the west of the current room
     else if(strcmp(command, west) == 0) {
       bool exists = false;
       for(auto itr = currentExits.begin(); itr != currentExits.end(); itr++) {
@@ -215,6 +235,7 @@ int main() {
 	cout << "There is no room that is directly west of this room." << endl;
       }
     }
+    //same as the command north, but for the room to the eaast of the current room
     else if(strcmp(command, east) == 0) {
       bool exists = false;
       for(auto itr = currentExits.begin(); itr != currentExits.end(); itr++) {
@@ -229,9 +250,17 @@ int main() {
 	cout << "There is no room that is directly east of this room." << endl;
       }
     }
+    //displays the users inventory, by going through the Inventory vector with an iterator and then outputting the title of the item.
+    else if(strcmp(command,inventory) == 0) {
+      for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
+	cout << (*i)->getTitle() << "\t";
+      }
+    }
+    //displays the items in the current room.
     else if(strcmp(command, look) == 0) {
       currentRoom->printItems();
     }
+    //allows the user to pick up items by getting the items title, and using the Room function take item to take the item, and if the item exists, put it in the users inventory
     else if(strcmp(command, take)==0) {
       cout << "Which item would you like to take?" << endl;
       cin.get(itemName, 150);
@@ -241,6 +270,7 @@ int main() {
 	Inventory.push_back(temp);
       }
     }
+    //gets the item the user wants to drop, loops through the players inventory to see if the player has that item, and if they do, add the item to the current room and remove the item from the players inventory.
     else if(strcmp(command, drop) == 0) {
       cout << "Which item would you like to drop?" << endl;
       cin.get(itemName,150);
@@ -259,13 +289,15 @@ int main() {
       }
       
     }
+    //checks if the player has the security card by looping through their inventory
     if(hasSecurityCard == false) {
-    for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
-      if(strcmp((*i)->getTitle(), "Security Card") == 0) {
-	hasSecurityCard = true;
+      for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
+	if(strcmp((*i)->getTitle(), "Security Card") == 0) {
+	  hasSecurityCard = true;
+	}
       }
     }
-    }
+    //checks if the player has the backpack by looping through their inventory
     if(hasBackpack == false) {
       for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
 	if(strcmp((*i)->getTitle(), "Backpack") == 0) {
@@ -273,6 +305,7 @@ int main() {
 	}
       }
     }
+    //checks if the player has the student id by looping through their inventory
     if(hasStudentID == false) {
       for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
 	if(strcmp((*i)->getTitle(), "Student ID") == 0) {
@@ -280,6 +313,7 @@ int main() {
 	}
       }
     }
+    //checks if the player has the computer by looping through their inventory
     if(hasComputer == false) {
       for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
 	if(strcmp((*i)->getTitle(), "Computer") == 0) {
@@ -287,6 +321,7 @@ int main() {
 	}
       }
     }
+    //checks if the player has the USB by looping through their inventory
     if(hasUSB == false) {
       for(auto i = Inventory.begin(); i != Inventory.end(); i++) {
 	if(strcmp((*i)->getTitle(), "USB") == 0) {
@@ -294,6 +329,7 @@ int main() {
 	}
       }
     }
+    //if the user has all of the necessary items and is in the lab, display the win message and end the game.
     if(hasSecurityCard && hasBackpack && hasStudentID && hasComputer && hasUSB && strcmp(currentRoom->getTitle(), lab->getTitle()) == 0) {
       cout << "You have now successfully signed into your email." << endl;
       cout << "Unfortunately, you just now remembered that you did not have anything after school, and head home." << endl;
