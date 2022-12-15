@@ -1,0 +1,6 @@
+Commands:
+directions: go to the room in that direction
+look: see the items in the room
+take: take an item from the room
+drop: drop and item
+inventory: see the items in your inventory.
